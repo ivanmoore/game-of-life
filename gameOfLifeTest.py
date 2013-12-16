@@ -1,5 +1,5 @@
 from unittest import TestCase
-from trythis import *
+from gameOfLife import *
 
 class RulesTest(TestCase):
     def testThatCellWithNoNeighboursDies(self):
