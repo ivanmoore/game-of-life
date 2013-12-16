@@ -44,10 +44,12 @@ class Grid(object):
     def bounds(self):
         if len(self.cells) == 0:
             return (0, 0, 0, 0)
-        minX = min([c[0] for c in self.cells])
-        maxX = max([c[0] for c in self.cells])
-        minY = min([c[1] for c in self.cells])
-        maxY = max([c[1] for c in self.cells])
+        xValues = [c[0] for c in self.cells]
+        minX = min(xValues)
+        maxX = max(xValues)
+        yValues = [c[1] for c in self.cells]
+        minY = min(yValues)
+        maxY = max(yValues)
         return (minX, minY, maxX, maxY)
 
     def toString(self, boundsToDisplay):
