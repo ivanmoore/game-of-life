@@ -9,31 +9,41 @@ class Rules(object):
     def shouldCellSpringIntoLife(self, numberOfNeighbours):
         return numberOfNeighbours == 3
 
+class Cell(object):
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
+    def __hash__(self):
+        return hash(self.x) + hash(self.y)
 
 class Grid(object):
     def __init__(self):
         self.cells = set()
 
     def isLiveCellAt(self, x, y):
-        return (x, y) in self.cells
+        return Cell(x, y) in self.cells
 
     def addCellAt(self, x, y):
-        self.cells.add((x, y))
+        self.cells.add(Cell(x, y))
 
     def numberOfNeighbours(self, x, y):
-        offsets = [(xOffset, yOffset) for xOffset in [-1, 0, 1] for yOffset in [-1, 0, 1] if
+        offsets = [Cell(xOffset, yOffset) for xOffset in [-1, 0, 1] for yOffset in [-1, 0, 1] if
                    not (xOffset == 0 and yOffset == 0)]
         neighbours = 0
         for offset in offsets:
-            if self.isLiveCellAt(x + offset[0], y + offset[1]):
+            if self.isLiveCellAt(x + offset.x, y + offset.y):
                 neighbours += 1
         return neighbours
 
     def nextGeneration(self):
         newGrid = Grid()
         for cell in self.cells:
-            if Rules().shouldCellStayAlive(self.numberOfNeighbours(cell[0], cell[1])):
-                newGrid.addCellAt(cell[0], cell[1])
+            if Rules().shouldCellStayAlive(self.numberOfNeighbours(cell.x, cell.y)):
+                newGrid.addCellAt(cell.x, cell.y)
         minX, minY, maxX, maxY = self.bounds()
         for x in range(minX - 1, maxX + 2):
             for y in range(minY - 1, maxY + 2):
@@ -44,10 +54,10 @@ class Grid(object):
     def bounds(self):
         if len(self.cells) == 0:
             return (0, 0, 0, 0)
-        xValues = [c[0] for c in self.cells]
+        xValues = [c.x for c in self.cells]
         minX = min(xValues)
         maxX = max(xValues)
-        yValues = [c[1] for c in self.cells]
+        yValues = [c.y for c in self.cells]
         minY = min(yValues)
         maxY = max(yValues)
         return (minX, minY, maxX, maxY)
