@@ -3,15 +3,15 @@ from gameOfLife import *
 
 class RulesTest(TestCase):
     def testThatCellWithNoNeighboursDies(self):
-        self.assertTrue(Rules().cellWithNeighboursDies(0))
-        self.assertTrue(Rules().cellWithNeighboursDies(1))
-        self.assertTrue(Rules().cellWithNeighboursDies(4))
-        self.assertFalse(Rules().cellWithNeighboursDies(2))
-        self.assertFalse(Rules().cellWithNeighboursDies(3))
+        self.assertFalse(Rules().shouldCellStayAlive(0))
+        self.assertFalse(Rules().shouldCellStayAlive(1))
+        self.assertFalse(Rules().shouldCellStayAlive(4))
+        self.assertTrue(Rules().shouldCellStayAlive(2))
+        self.assertTrue(Rules().shouldCellStayAlive(3))
 
     def testThatCellWithThreeNeighboursSpringsIntoLife(self):
-        self.assertTrue(Rules().cellWithNeighboursSpringsIntoLife(3))
-        self.assertFalse(Rules().cellWithNeighboursSpringsIntoLife(6))
+        self.assertTrue(Rules().shouldCellSpringIntoLife(3))
+        self.assertFalse(Rules().shouldCellSpringIntoLife(6))
 
 class GridTest(TestCase):
     def testThatEmptyGridDoesNotContainAnyCells(self):

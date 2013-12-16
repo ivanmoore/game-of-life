@@ -3,10 +3,10 @@ import time
 
 
 class Rules(object):
-    def cellWithNeighboursDies(self, numberOfNeighbours):
-        return not numberOfNeighbours in [2, 3]
+    def shouldCellStayAlive(self, numberOfNeighbours):
+        return numberOfNeighbours in [2, 3]
 
-    def cellWithNeighboursSpringsIntoLife(self, numberOfNeighbours):
+    def shouldCellSpringIntoLife(self, numberOfNeighbours):
         return numberOfNeighbours == 3
 
 
@@ -32,12 +32,12 @@ class Grid(object):
     def nextGeneration(self):
         newGrid = Grid()
         for cell in self.cells:
-            if not Rules().cellWithNeighboursDies(self.numberOfNeighbours(cell[0], cell[1])):
+            if Rules().shouldCellStayAlive(self.numberOfNeighbours(cell[0], cell[1])):
                 newGrid.addCellAt(cell[0], cell[1])
         minX, minY, maxX, maxY = self.bounds()
         for x in range(minX - 1, maxX + 2):
             for y in range(minY - 1, maxY + 2):
-                if Rules().cellWithNeighboursSpringsIntoLife(self.numberOfNeighbours(x, y)):
+                if Rules().shouldCellSpringIntoLife(self.numberOfNeighbours(x, y)):
                     newGrid.addCellAt(x, y)
         return newGrid
 
