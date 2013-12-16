@@ -55,12 +55,8 @@ class Grid(object):
         if len(self.cells) == 0:
             return (0, 0, 0, 0)
         xValues = [c.x for c in self.cells]
-        minX = min(xValues)
-        maxX = max(xValues)
         yValues = [c.y for c in self.cells]
-        minY = min(yValues)
-        maxY = max(yValues)
-        return (minX, minY, maxX, maxY)
+        return (min(xValues), min(yValues), max(xValues), max(yValues))
 
     def toString(self, boundsToDisplay):
         minX, minY, maxX, maxY = boundsToDisplay
