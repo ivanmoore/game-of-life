@@ -38,17 +38,22 @@ class Grid(object):
             if self.isLiveCellAt(x + offset.x, y + offset.y):
                 neighbours += 1
         return neighbours
+        
+    def getNeighboursOfCell(self, x, y):
+        offsets = [(xOffset, yOffset) for xOffset in [-1, 0, 1] for yOffset in [-1, 0, 1]]
+        neighbours = []
+        for offset in offsets:
+            neighbours += [(x + offset[0], y + offset[1])]
+        return neighbours
 
     def nextGeneration(self):
         newGrid = Grid()
         for cell in self.cells:
             if Rules().shouldCellStayAlive(self.numberOfNeighbours(cell.x, cell.y)):
                 newGrid.addCellAt(cell.x, cell.y)
-        minX, minY, maxX, maxY = self.bounds()
-        for x in range(minX - 1, maxX + 2):
-            for y in range(minY - 1, maxY + 2):
-                if Rules().shouldCellSpringIntoLife(self.numberOfNeighbours(x, y)):
-                    newGrid.addCellAt(x, y)
+            for neighbour in self.getNeighboursOfCell(cell.x, cell.y):
+                if Rules().shouldCellSpringIntoLife(self.numberOfNeighbours(neighbour.x, neighbour.y)):
+                    newGrid.addCellAt(neighbour.x, neighbour.y)
         return newGrid
 
     def bounds(self):
