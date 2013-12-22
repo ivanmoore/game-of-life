@@ -40,10 +40,10 @@ class Grid(object):
         return neighbours
         
     def getNeighboursOfCell(self, x, y):
-        offsets = [(xOffset, yOffset) for xOffset in [-1, 0, 1] for yOffset in [-1, 0, 1]]
-        neighbours = []
+        offsets = [Cell(xOffset, yOffset) for xOffset in [-1, 0, 1] for yOffset in [-1, 0, 1]]
+        neighbours = set()
         for offset in offsets:
-            neighbours += [(x + offset[0], y + offset[1])]
+            neighbours.add(Cell(x + offset.x, y + offset.y))
         return neighbours
 
     def nextGeneration(self):
@@ -75,14 +75,24 @@ class Grid(object):
             result += "\n"
         return result
 
-
 if __name__ == "__main__":
-    grid = Grid()
-    for i in range(0, 20):
-        grid.addCellAt(random.randint(0, 20), random.randint(0, 10))
-    x0, y0, x1, y1 = grid.bounds()
-    outerBounds = (x0 - 1, y0 - 1, x1 + 1, y1 + 1)
-    for i in range(1, 20):
-        print(grid.toString(outerBounds))
-        grid = grid.nextGeneration()
-        time.sleep(1)
+    for a in range(100):
+        grid = Grid()
+        for i in range(0, 40):
+            grid.addCellAt(random.randint(0, 20), random.randint(0, 10))
+        x0, y0, x1, y1 = grid.bounds()
+        outerBounds = (x0 - 10, y0 - 10, x1 + 10, y1 + 10)
+        initial = grid.toString(outerBounds)
+        previousGenerations = set()
+        for i in range(1, 1000):
+            gridAsCellSet = grid.cells
+            if gridAsCellSet in previousGenerations:
+                print("Repeats a previous generation on generation %s" % i)
+                break
+            previousGenerations.add(frozenset(gridAsCellSet))
+            #print(gridAsString)
+            grid = grid.nextGeneration()
+            #time.sleep(0.5)
+            if i == 999:
+                print("These conditions lasted:")
+                print(initial)
