@@ -75,24 +75,38 @@ class Grid(object):
             result += "\n"
         return result
 
+def makeBarChart(data):
+    result = ""
+    for i in range(0, len(data)):
+        result += ("" + str(i) + "\t")
+        if i in data:
+            for dataPeice in data:
+                if dataPeice == i:
+                    result += "x"
+        result += "\n"
+    return result
+
+
 if __name__ == "__main__":
+    failureTimeData = []
     for a in range(100):
         grid = Grid()
-        for i in range(0, 40):
-            grid.addCellAt(random.randint(0, 20), random.randint(0, 10))
+        for i in range(0, 20):
+            grid.addCellAt(random.randint(0, 10), random.randint(0, 10))
         x0, y0, x1, y1 = grid.bounds()
-        outerBounds = (x0 - 10, y0 - 10, x1 + 10, y1 + 10)
+        outerBounds = (x0 - 1, y0 - 1, x1 + 1, y1 + 1)
         initial = grid.toString(outerBounds)
         previousGenerations = set()
         for i in range(1, 1000):
             gridAsCellSet = grid.cells
             if gridAsCellSet in previousGenerations:
                 print("Repeats a previous generation on generation %s" % i)
+                failureTimeData += [i]
                 break
             previousGenerations.add(frozenset(gridAsCellSet))
-            #print(gridAsString)
             grid = grid.nextGeneration()
-            #time.sleep(0.5)
-            if i == 999:
-                print("These conditions lasted:")
-                print(initial)
+        if i == 999:
+            print("Lasts the full 299 generations")
+        failureTimeData += [90]
+    print(failureTimeData)
+    print(makeBarChart(failureTimeData))
