@@ -1,0 +1,2 @@
+stats=wc -l *.py
+tests=python gameOfLifeTest.py 
