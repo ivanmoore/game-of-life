@@ -1,2 +1,3 @@
 stats=wc -l gameOfLife.py
 tests=python gameOfLifeTest.py 
+package=echo zipping up
