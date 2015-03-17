@@ -1,4 +1,4 @@
-from unittest import TestCase
+from unittest import TestCase, main
 from gameOfLife import *
 
 class RulesTest(TestCase):
@@ -60,3 +60,6 @@ class GridTest(TestCase):
     def testBoundsForEmptyGrid(self):
         testGrid = Grid()
         self.assertEquals((0,0,0,0), testGrid.bounds())
+
+if __name__ == '__main__':
+    main()
